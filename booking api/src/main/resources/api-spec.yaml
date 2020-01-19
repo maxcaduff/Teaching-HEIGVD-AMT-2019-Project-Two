@@ -1,0 +1,429 @@
+openapi: 3.0.1
+info:
+  title: Bookings API
+  description: API to book activities at different locations.
+  version: 1.0.0
+servers:
+- url: https://192.168.99.100/api
+tags:
+- name: activities
+  description: Operations about available activities
+- name: locations
+  description: Operations about locations
+- name: bookings
+  description: Operations about bookings
+paths:
+
+#####  activities: #####
+
+  /activity/all:
+    get:
+      tags: 
+      - activities
+      summary: Get all activities
+      operationId: getActivities
+      parameters: 
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page wished, defaults to first page (0).
+          required: false
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+        406:
+          description: Bad accept header
+  /activity/availability/{day}:
+    get:
+      tags: 
+      - activities
+      summary: Get all available activities on a certain day
+      operationId: getAvailableActivities
+      parameters: 
+        - in: path
+          name: day
+          schema:
+            type: string
+          description: selected day (YYYYMMDD).
+          required: true
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page wished, defaults to first page (0).
+          required: false
+        - in: query
+          name: loc
+          schema:
+            type: integer
+          description: Location ID to filter results.
+          required: false
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityResult'
+        400:
+          description: Wrong format
+        406:
+          description: Bad accept header
+  /activity:
+    post:
+      tags:
+      - activities
+      summary: Add a new activity
+      operationId: addActivity
+      requestBody:
+        description: New activity to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activity'
+        required: true
+      responses:
+        204:
+          description: Activity created successfully
+        400:
+          description: Invalid input
+        401:
+          description: Auth token required
+        403:
+          description: Forbidden
+      security:
+      - bearerAuth: []
+  /activity/{id}:
+    put:
+      tags:
+      - activities
+      summary: Update an activity, id must exist
+      operationId: updateActivity
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: id of activity to edit.
+          required: true
+      requestBody:
+        description: New values for activity, id not needed here
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activity'
+        required: true
+      responses:
+        204:
+          description: Updated successfully
+        400:
+          description: Invalid input
+        401:
+          description: Auth token required
+        403:
+          description: Forbidden
+        404:
+          description: Id not found
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+      - activities
+      summary: Delete the specified activity
+      operationId: deleteActivity
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: id of activity to delete.
+          required: true
+      responses:
+        204:
+          description: Deleted successfully
+        401:
+          description: Auth token required
+        403:
+          description: Forbidden
+        404:
+          description: Id not found
+      security:
+      - bearerAuth: []
+      
+#####  locations: #####
+
+  /location/all:
+    get:
+      tags: 
+      - locations
+      summary: Get all locations
+      operationId: getLocations
+      parameters: 
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page wished, defaults to first page (0).
+          required: false
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+        406:
+          description: Bad accept header
+
+  /location:
+    post:
+      tags:
+      - locations
+      summary: Add a new location
+      operationId: addLocation
+      requestBody:
+        description: New location to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+        required: true
+      responses:
+        204:
+          description: Location created successfully
+        400:
+          description: Invalid input
+        401:
+          description: Auth token required
+        403:
+          description: Forbidden
+      security:
+      - bearerAuth: []
+  /location/{id}:
+    put:
+      tags:
+      - locations
+      summary: Update a location, id must exist
+      operationId: updateLocation
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: id of location to edit.
+          required: true
+      requestBody:
+        description: New values for location
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+        required: true
+      responses:
+        204:
+          description: Updated successfully
+        400:
+          description: Invalid input
+        401:
+          description: Auth token required
+        403:
+          description: Forbidden
+        404:
+          description: id not found
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+      - locations
+      summary: Delete the specified location, id must exist
+      operationId: deleteLocation
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: id of location to delete
+          required: true
+      responses:
+        204:
+          description: Deleted successfully
+        401:
+          description: Auth token required
+        403:
+          description: Forbidden
+        404:
+          description: id not found
+      security:
+      - bearerAuth: []
+      
+##### bookings #####
+      
+  /booking/my:
+    get:
+      tags:
+      - bookings
+      summary: get logged user's bookings
+      operationId: getBookings
+      parameters: 
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: page wished, defaults to first page (0).
+          required: false
+        - in: query
+          name: previous
+          schema:
+            type: boolean
+          description: true to get previous bookings.
+          required: false
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+        401:
+          description: Auth token required
+        406:
+          description: Bad accept header
+      security:
+        - bearerAuth: []
+       
+  /booking:
+    post:
+      tags:
+      - bookings
+      summary: submits booking for logged user
+      description: creates or edit a booking if it already exists (same date, activity and location) by cumulating the given number of places with existing
+      operationId: book
+      requestBody:
+        description: Booking infos
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+        required: true
+      responses:
+        204:
+          description: successful booking
+        401:
+          description: must be logged
+        403:
+          description: Not enough places left
+      security:
+        - bearerAuth: []
+  /booking/{id}:
+    delete:
+      tags:
+      - bookings
+      summary: deletes booking for logged user
+      operationId: deleteBooking
+      parameters: 
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: id of booking to delete
+          required: true
+      responses:
+        204:
+          description: successfully deleted
+        401:
+          description: must be logged
+        403:
+          description: unauthorized
+        404:
+          description: booking not found
+      security:
+        - bearerAuth: []
+          
+components:
+  schemas:
+    Activity:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          minLength: 3
+        description:
+          type: string
+          minLength: 10
+        maxPlaces:
+          type: integer
+          minimum: 1
+      required: 
+        - name
+        - description
+        - maxPlaces
+    ActivityResult:
+      type: object
+      properties:
+        activity:
+          $ref: '#/components/schemas/Activity'
+        location:
+          $ref: '#/components/schemas/Location'
+        placesLeft:
+          type: integer
+        booked:
+          type: integer
+          
+    Location:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+          minLength: 3
+        address:
+          type: string
+          minLength: 15
+      required: 
+        - name
+        - address
+    
+    Booking:
+      type: object
+      properties:
+        id:
+          type: integer
+        activityId:
+          type: integer
+        activityName:
+          type: string
+        locationId:
+          type: integer
+        locationName:
+          type: integer
+        date:
+          type: string
+        nbPlaces:
+          type: integer
+      required: 
+        - activityId
+        - locationId
+        - date
+        - nbPlaces
+          
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 

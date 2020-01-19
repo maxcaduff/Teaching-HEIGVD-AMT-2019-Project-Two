@@ -1,0 +1,171 @@
+openapi: 3.0.1
+info:
+  title: Authentication API
+  description: Authentication API
+  version: 1.0.0
+servers:
+- url: https://192.168.99.100/api
+tags:
+- name: user
+  description: Operations about user
+paths:
+  /user:
+    get:
+      tags: 
+      - user
+      summary: Gets public infos of specified user
+      operationId: getUser
+      parameters: 
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: Email of the user to fetch
+          required: true
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicUser'
+        400:
+          description: no email supplied
+        404:
+          description: User not found
+        406:
+          description: Bad accept header
+    post:
+      tags:
+      - user
+      summary: Add a new user. Password is generated and sent to specified email
+      operationId: addUser
+      requestBody:
+        description: New user to add
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicUser'
+        required: true
+      responses:
+        204:
+          description: User created successfully
+        400:
+          description: Invalid input
+        404:
+          description: User not found
+    delete:
+      tags:
+      - user
+      summary: Delete the user linked to the provided JWT
+      operationId: deleteUser
+      responses:
+        204:
+          description: Deleted successfully
+        401:
+          description: Auth token required
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - user
+      summary: Update the user linked to the provided JWT
+      operationId: updateUser
+      requestBody:
+        description: New values for user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        204:
+          description: Updated successfully
+        400:
+          description: Invalid input
+        401:
+          description: Auth token required
+        403:
+          description: Forbidden
+      security:
+        - bearerAuth: []
+  /user/login:
+    post:
+      tags:
+      - user
+      summary: login and get JWT
+      description: Returns a JWT if credentials match
+      operationId: login
+      requestBody:
+        description: User credentials
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+        required: true
+      responses:
+        204:
+          description: successful login
+        400:
+          description: Invalid credentials supplied
+          
+  /user/newPassword:
+    post:
+      tags:
+      - user
+      summary: reset an existing user's password
+      description: Sends a new password to the user's email
+      operationId: reset
+      requestBody:
+        description: user email
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+        required: true
+      responses:
+        204:
+          description: successful reset
+        400:
+          description: no email supplied
+        404: 
+          description: User not found
+        500:
+         description: Error sending password by email
+
+       
+components:
+  schemas:
+    PublicUser:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+    User:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
