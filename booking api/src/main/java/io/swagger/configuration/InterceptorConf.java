@@ -21,7 +21,7 @@ public class InterceptorConf extends WebMvcConfigurerAdapter {
 
     @Autowired
     public InterceptorConf(AdminRepository adminRepo) {
-        Assert.notNull(adminRepo, "admin repo most not be null");
+        Assert.notNull(adminRepo, "admin repo must not be null");
         this.adminRepository = adminRepo;
     }
     @Override
@@ -29,11 +29,15 @@ public class InterceptorConf extends WebMvcConfigurerAdapter {
         registry.addInterceptor(new AdminCheckInterceptor(adminRepository))
                 .addPathPatterns("/activity")
                 .addPathPatterns("/location")
+                .addPathPatterns("/activity/**")
+                .addPathPatterns("/location/**")
                 .excludePathPatterns("/activity/all")
-                .excludePathPatterns("/activity/availability/*")
-                .excludePathPatterns("/location/all");
+                .excludePathPatterns("/activity/all/")
+                .excludePathPatterns("/activity/availability/**")
+                .excludePathPatterns("/location/all")
+                .excludePathPatterns("/location/all/");
         registry.addInterceptor(new LoggedUserInterceptor())
                 .addPathPatterns("/booking")
-                .addPathPatterns("/booking/*");
+                .addPathPatterns("/booking/**");
     }
 }

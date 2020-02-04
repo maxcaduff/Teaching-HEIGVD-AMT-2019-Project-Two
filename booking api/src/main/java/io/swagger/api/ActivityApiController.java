@@ -48,7 +48,6 @@ public class ActivityApiController implements ActivityApi {
     public ResponseEntity<Void> addActivity(@ApiParam(value = "New activity to add" ,required=true )  @Valid @RequestBody Activity body) {
 
         activityRepository.save(body);
-        //log.info("body: "+ body + "\nrepo: " + activityRepository.findAll());
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
@@ -68,7 +67,7 @@ public class ActivityApiController implements ActivityApi {
                 page = 0;
             Pageable pageNb = new PageRequest(page, pageSize);
 
-            return new ResponseEntity<List<Activity>>(activityRepository.findAll(pageNb), HttpStatus.OK);
+            return new ResponseEntity<List<Activity>>(activityRepository.findAll(pageNb).getContent(), HttpStatus.OK);
         }
         return new ResponseEntity<List<Activity>>(HttpStatus.NOT_ACCEPTABLE);
     }

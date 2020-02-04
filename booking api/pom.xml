@@ -3,7 +3,7 @@
     <groupId>ch.heig</groupId>
     <artifactId>bookingApi</artifactId>
     <packaging>jar</packaging>
-    <name>swagger-spring</name>
+    <name>booking-api</name>
     <version>1.0.0</version>
     <properties>
         <java.version>1.8</java.version>
@@ -72,19 +72,6 @@
 
     <!-- user added deps -->
 
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <scope>test</scope>
-            <version>1.0.11</version>
-        </dependency>
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-jvm</artifactId>
-            <scope>test</scope>
-            <version>1.0.11</version>
-            <type>pom</type>
-        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

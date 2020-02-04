@@ -2,6 +2,7 @@ package io.swagger.Repositories;
 
 import io.swagger.model.Activity;
 import io.swagger.model.ActivityResult;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -15,10 +16,9 @@ import java.util.List;
  *
  * @author Max
  */
-@Component // maybe not needed
 public interface ActivityRepository extends CrudRepository<Activity, Integer> {
 
-    List<Activity> findAll(Pageable page);
+    Page<Activity> findAll(Pageable page);
     List<Activity> findAll();
 
 

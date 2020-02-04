@@ -32,8 +32,10 @@ USE bookingApi;
 CREATE USER `bookingapijpa`@`%` IDENTIFIED BY 'be77erPa$$';
 GRANT select, insert, delete, update ON * to `bookingapijpa`@`%`;
 
-
+DROP TABLE IF EXISTS `Booking`;
 DROP TABLE IF EXISTS `Activity`;
+DROP TABLE IF EXISTS `Location`;
+
 CREATE TABLE `Activity` (
   `id` integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -41,14 +43,12 @@ CREATE TABLE `Activity` (
   `description` varchar(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `Location`;
 CREATE TABLE `Location` (
   `id` integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `address` varchar(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `Booking`;
 CREATE TABLE `Booking` (
   `id` integer NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `user` varchar(255) NOT NULL,

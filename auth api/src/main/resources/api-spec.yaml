@@ -4,7 +4,7 @@ info:
   description: Authentication API
   version: 1.0.0
 servers:
-- url: https://192.168.99.100/api
+- url: https://192.168.99.100/authApi
 tags:
 - name: user
   description: Operations about user

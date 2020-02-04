@@ -25,7 +25,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-01-05T20:58:36.237Z[GMT]")
-@Api(value = "bookings", description = "the booking API")
+@Api(value = "bookings", description = "the booking API", tags={ "bookings", })
 public interface BookingApi {
 
     @ApiOperation(value = "get logged user's bookings", nickname = "getBookings", notes = "", response = Booking.class, responseContainer = "List"

@@ -1,6 +1,7 @@
 package io.swagger.Repositories;
 
 import io.swagger.model.Location;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
@@ -14,5 +15,5 @@ import java.util.List;
 public interface LocationRepository extends CrudRepository<Location, Integer> {
 
   List<Location> findAll();
-  List<Location> findAll(Pageable page);
+  Page<Location> findAll(Pageable page);
 }

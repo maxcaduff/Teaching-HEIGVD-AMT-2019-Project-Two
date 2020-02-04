@@ -55,7 +55,7 @@ public class LocationApiController implements LocationApi {
             if (page == null)
                 page = 0;
             Pageable pageNb = new PageRequest(page, pageSize);
-            return new ResponseEntity<List<Location>>(locationRepository.findAll(pageNb), HttpStatus.OK);
+            return new ResponseEntity<List<Location>>(locationRepository.findAll(pageNb).getContent(), HttpStatus.OK);
         }
         return new ResponseEntity<List<Location>>(HttpStatus.NOT_ACCEPTABLE);
     }

@@ -7,7 +7,6 @@ import io.swagger.model.Activity;
 import io.swagger.model.Booking;
 import io.swagger.annotations.*;
 import io.swagger.model.BookingEntity;
-import io.swagger.utils.JWTHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +62,10 @@ public class BookingApiController implements BookingApi {
         if (placesLeft - body.getNbPlaces() < 0)
             return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
 
-//        log.info("first booking matching: " + bookings.get(0).toString());
         BookingEntity bookingToSave = null;
         for (BookingEntity b: bookings )
             if (b.getUser().equals(user)) {
                 // adding places to existing, makes more sense than replacing or denying
-//                log.info("found "+ b);
                 bookingToSave = b;
                 bookingToSave.setNbPlaces(body.getNbPlaces() + b.getNbPlaces());
                 break;
@@ -108,8 +105,8 @@ public class BookingApiController implements BookingApi {
 
             String today = new SimpleDateFormat("yyyyMMdd").format(new Date());
             List<BookingEntity> userBooking = (previous ?
-                    bookingRepository.findAllByUserAndDateBefore(user, today, pageNb )
-                    : bookingRepository.findAllByUserAndDateGreaterThanEqual(user, today, pageNb) );
+                    bookingRepository.findAllByUserAndDateBefore(user, today, pageNb ).getContent()
+                    : bookingRepository.findAllByUserAndDateGreaterThanEqual(user, today, pageNb).getContent() );
             List<Booking> resp = new ArrayList<>();
             for (BookingEntity b : userBooking)
                 resp.add(new Booking(b, activityRepository.findOne(b.getActivity()).getName(), locationRepository.findOne(b.getlocation()).getName()));

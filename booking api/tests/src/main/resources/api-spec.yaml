@@ -4,25 +4,25 @@ info:
   description: API to book activities at different locations.
   version: 1.0.0
 servers:
-- url: https://192.168.99.100/api
+  - url: https://192.168.99.100/api
 tags:
-- name: activities
-  description: Operations about available activities
-- name: locations
-  description: Operations about locations
-- name: bookings
-  description: Operations about bookings
+  - name: activities
+    description: Operations about available activities
+  - name: locations
+    description: Operations about locations
+  - name: bookings
+    description: Operations about bookings
 paths:
 
-#####  activities: #####
+  #####  activities: #####
 
   /activity/all:
     get:
-      tags: 
-      - activities
+      tags:
+        - activities
       summary: Get all activities
       operationId: getActivities
-      parameters: 
+      parameters:
         - in: query
           name: page
           schema:
@@ -42,11 +42,11 @@ paths:
           description: Bad accept header
   /activity/availability/{day}:
     get:
-      tags: 
-      - activities
+      tags:
+        - activities
       summary: Get all available activities on a certain day
       operationId: getAvailableActivities
-      parameters: 
+      parameters:
         - in: path
           name: day
           schema:
@@ -81,7 +81,7 @@ paths:
   /activity:
     post:
       tags:
-      - activities
+        - activities
       summary: Add a new activity
       operationId: addActivity
       requestBody:
@@ -101,14 +101,14 @@ paths:
         403:
           description: Forbidden
       security:
-      - bearerAuth: []
+        - bearerAuth: []
   /activity/{id}:
     put:
       tags:
-      - activities
+        - activities
       summary: Update an activity, id must exist
       operationId: updateActivity
-      parameters: 
+      parameters:
         - in: path
           name: id
           schema:
@@ -137,10 +137,10 @@ paths:
         - bearerAuth: []
     delete:
       tags:
-      - activities
+        - activities
       summary: Delete the specified activity
       operationId: deleteActivity
-      parameters: 
+      parameters:
         - in: path
           name: id
           schema:
@@ -157,17 +157,17 @@ paths:
         404:
           description: Id not found
       security:
-      - bearerAuth: []
-      
-#####  locations: #####
+        - bearerAuth: []
+
+  #####  locations: #####
 
   /location/all:
     get:
-      tags: 
-      - locations
+      tags:
+        - locations
       summary: Get all locations
       operationId: getLocations
-      parameters: 
+      parameters:
         - in: query
           name: page
           schema:
@@ -189,7 +189,7 @@ paths:
   /location:
     post:
       tags:
-      - locations
+        - locations
       summary: Add a new location
       operationId: addLocation
       requestBody:
@@ -209,14 +209,14 @@ paths:
         403:
           description: Forbidden
       security:
-      - bearerAuth: []
+        - bearerAuth: []
   /location/{id}:
     put:
       tags:
-      - locations
+        - locations
       summary: Update a location, id must exist
       operationId: updateLocation
-      parameters: 
+      parameters:
         - in: path
           name: id
           schema:
@@ -245,10 +245,10 @@ paths:
         - bearerAuth: []
     delete:
       tags:
-      - locations
+        - locations
       summary: Delete the specified location, id must exist
       operationId: deleteLocation
-      parameters: 
+      parameters:
         - in: path
           name: id
           schema:
@@ -265,17 +265,17 @@ paths:
         404:
           description: id not found
       security:
-      - bearerAuth: []
-      
-##### bookings #####
-      
+        - bearerAuth: []
+
+      ##### bookings #####
+
   /booking/my:
     get:
       tags:
-      - bookings
+        - bookings
       summary: get logged user's bookings
       operationId: getBookings
-      parameters: 
+      parameters:
         - in: query
           name: page
           schema:
@@ -303,11 +303,11 @@ paths:
           description: Bad accept header
       security:
         - bearerAuth: []
-       
+
   /booking:
     post:
       tags:
-      - bookings
+        - bookings
       summary: submits booking for logged user
       description: creates or edit a booking if it already exists (same date, activity and location) by cumulating the given number of places with existing
       operationId: book
@@ -330,10 +330,10 @@ paths:
   /booking/{id}:
     delete:
       tags:
-      - bookings
+        - bookings
       summary: deletes booking for logged user
       operationId: deleteBooking
-      parameters: 
+      parameters:
         - in: path
           name: id
           schema:
@@ -351,7 +351,7 @@ paths:
           description: booking not found
       security:
         - bearerAuth: []
-          
+
 components:
   schemas:
     Activity:
@@ -368,7 +368,7 @@ components:
         maxPlaces:
           type: integer
           minimum: 1
-      required: 
+      required:
         - name
         - description
         - maxPlaces
@@ -381,9 +381,7 @@ components:
           $ref: '#/components/schemas/Location'
         placesLeft:
           type: integer
-        booked:
-          type: integer
-          
+
     Location:
       type: object
       properties:
@@ -395,10 +393,10 @@ components:
         address:
           type: string
           minLength: 15
-      required: 
+      required:
         - name
         - address
-    
+
     Booking:
       type: object
       properties:
@@ -411,17 +409,17 @@ components:
         locationId:
           type: integer
         locationName:
-          type: integer
+          type: string
         date:
           type: string
         nbPlaces:
           type: integer
-      required: 
+      required:
         - activityId
         - locationId
         - date
         - nbPlaces
-          
+
   securitySchemes:
     bearerAuth:
       type: http

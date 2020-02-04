@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2019-12-25T21:37:52.105Z[GMT]")
-@Api(value = "user", description = "the user API")
+@Api(value = "user", description = "the user API", tags={ "user", })
 public interface UserApi {
 
     @ApiOperation(value = "Add a new user. Password is generated and sent to specified email", nickname = "addUser", notes = "", tags={ "user", })

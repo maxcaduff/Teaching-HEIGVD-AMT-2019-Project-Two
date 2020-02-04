@@ -1,5 +1,21 @@
 version: "3"
 services:
+  traefik:
+    image: "traefik:v2.0"
+    container_name: "traefikAMT"
+    command:
+      #- "--log.level=DEBUG"
+      #- "--accesslog=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
   db:
     container_name: mysqlAMTp2
     build: mysql
@@ -16,8 +32,13 @@ services:
     restart: always
     depends_on:
       - db
-    ports:
-      - "9000:9000"
+    #ports:
+    #  - "9000:9000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.user.rule=Host(`192.168.99.100`) && PathPrefix(`/authApi`)"
+      - "traefik.http.routers.user.entrypoints=web"
+      #- "traefik.http.middlewares.add-api.addprefix.prefix=/authApi"
 
   bookingapi:
     container_name: bookingapiAMT
@@ -25,8 +46,13 @@ services:
     restart: always
     depends_on:
       - db
-    ports:
-      - "8000:8000"
+    #ports:
+    #  - "8000:8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.booking.rule=Host(`192.168.99.100`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.booking.entrypoints=web"
+      #- "traefik.http.middlewares.add-api.addprefix.prefix=/api"
 
 
 

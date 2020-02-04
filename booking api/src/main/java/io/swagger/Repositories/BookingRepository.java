@@ -1,6 +1,7 @@
 package io.swagger.Repositories;
 
 import io.swagger.model.BookingEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
@@ -17,9 +18,9 @@ public interface BookingRepository extends CrudRepository<BookingEntity, Integer
 
     List<BookingEntity> getAllByActivityAndLocationAndDate(int act, int loc, String date);
 
-    List<BookingEntity> findAllByUserAndDateGreaterThanEqual(String user, String date, Pageable page);
+    Page<BookingEntity> findAllByUserAndDateGreaterThanEqual(String user, String date, Pageable page);
 
-    List<BookingEntity> findAllByUserAndDateBefore(String user, String date, Pageable page);
+    Page<BookingEntity> findAllByUserAndDateBefore(String user, String date, Pageable page);
 
 
 

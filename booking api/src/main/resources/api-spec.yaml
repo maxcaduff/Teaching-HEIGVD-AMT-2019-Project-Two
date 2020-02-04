@@ -381,8 +381,6 @@ components:
           $ref: '#/components/schemas/Location'
         placesLeft:
           type: integer
-        booked:
-          type: integer
           
     Location:
       type: object
@@ -411,7 +409,7 @@ components:
         locationId:
           type: integer
         locationName:
-          type: integer
+          type: string
         date:
           type: string
         nbPlaces:
